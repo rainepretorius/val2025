@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 yesBtn.addEventListener("click", () => {
-    question.innerHTML = "Yipee! 🎉";
+    question.innerHTML = "Yipee! 🎉<br>Raine  is laat weet!";
     gif.src = "/minions.gif";
     var old_yes_display = yesBtn.style.display;
     var old_no_display = noBtn.style.display;
@@ -62,8 +62,9 @@ yesBtn.addEventListener("click", () => {
       noBtn.style.display = old_no_display;
       yesBtn.style.display = old_yes_display;
       question.innerHTML = "Wil jy saam koffie of milkshake drink?";
+      noBtn.style.transform = `translate(0px, 0px)`; // Set initial position
       gif.src = "/cat.gif";
-    }, 10000);
+    }, 8000);
 });
 
 noBtn.addEventListener("mouseover", moveButton);
