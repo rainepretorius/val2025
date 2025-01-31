@@ -13,7 +13,11 @@ function getValidPosition() {
     const buttonRect = noBtn.getBoundingClientRect();
     
     const maxX = containerRect.width - buttonRect.width;
-    const maxY = containerRect.height - buttonRect.height;
+    var maxY = containerRect.height - buttonRect.height;
+    
+    if(maxY<=0) {
+      maxY = maxX * 0.7
+    }
     
     // Ensure positive values
     const safeMaxX = Math.max(0, maxX);
@@ -22,17 +26,17 @@ function getValidPosition() {
     // Generate new position that's different from current
     let newX, newY;
     do {
-        newX = Math.random() * safeMaxX / 2;
-        newY = Math.random() * safeMaxY;
+        newX = (Math.random() - 0.6) * safeMaxX * 0.9;
+        newY = (Math.random() - 0.6) * safeMaxY * 1.2;
     } while (
-        Math.abs(newX - currentX) < buttonRect.width/2 && 
-        Math.abs(newY - currentY) < buttonRect.height/2
+        Math.abs(newX - currentX) < buttonRect.width && 
+        Math.abs(newY - currentY) < buttonRect.height
     );
 
     currentX = newX;
     currentY = newY;
     
-    return { x: newX - 10, y: newY };
+    return { x: newX - 10, y: newY - 50 };
 }
 
 function moveButton() {
@@ -58,6 +62,17 @@ noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("click", () => {
     moveButton();
     sendWebhookNotification('No button clicked!');
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Add event listener for the "beforeunload" event
+    noBtn.style.transform = `translate(0px, 0px)`; // Set initial position
+    window.addEventListener("beforeunload", (event) => {
+        // Cancel the event as stated by the standard.
+        event.preventDefault();
+        // Chrome requires returnValue to be set.
+        event.returnValue = "";
+    });
 });
 
 // Webhook function remains the same
