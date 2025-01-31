@@ -55,7 +55,7 @@ yesBtn.addEventListener("click", () => {
     gif.src = "/minions.gif";
     noBtn.style.display = "none";
     yesBtn.style.display = "none";
-    sendWebhookNotification('Ja ek wil gaan koffie drink! ☕');
+    sendWebhookNotification('Ja ek wil gaan koffie / milkshake drink! ☕');
 });
 
 noBtn.addEventListener("mouseover", moveButton);
