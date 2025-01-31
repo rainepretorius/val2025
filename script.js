@@ -53,9 +53,17 @@ document.addEventListener('DOMContentLoaded', () => {
 yesBtn.addEventListener("click", () => {
     question.innerHTML = "Yipee! 🎉";
     gif.src = "/minions.gif";
+    var old_yes_display = yesBtn.style.display;
+    var old_no_display = noBtn.style.display;
     noBtn.style.display = "none";
     yesBtn.style.display = "none";
     sendWebhookNotification('Ja ek wil gaan koffie / milkshake drink! ☕');
+    setTimeout(() => {
+      noBtn.style.display = old_no_display;
+      yesBtn.style.display = old_yes_display;
+      question.innerHTML = "Wil jy saam koffie of milkshake drink?";
+      gif.src = "/cat.gif";
+    }, 10000);
 });
 
 noBtn.addEventListener("mouseover", moveButton);
