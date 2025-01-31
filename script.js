@@ -2,77 +2,75 @@ const yesBtn = document.querySelector(".yes-btn");
 const noBtn = document.querySelector(".no-btn");
 const question = document.querySelector(".question");
 const gif = document.querySelector(".gif");
+const btnGroup = document.querySelector(".btn-group");
 
-// Change text and gif when the Yes button is clicked
+// Initialize button position
+let currentX = 0;
+let currentY = 0;
+
+function getValidPosition() {
+    const containerRect = btnGroup.getBoundingClientRect();
+    const buttonRect = noBtn.getBoundingClientRect();
+    
+    const maxX = containerRect.width - buttonRect.width;
+    const maxY = containerRect.height - buttonRect.height;
+    
+    // Ensure positive values
+    const safeMaxX = Math.max(0, maxX);
+    const safeMaxY = Math.max(0, maxY);
+
+    // Generate new position that's different from current
+    let newX, newY;
+    do {
+        newX = Math.random() * safeMaxX / 2;
+        newY = Math.random() * safeMaxY;
+    } while (
+        Math.abs(newX - currentX) < buttonRect.width/2 && 
+        Math.abs(newY - currentY) < buttonRect.height/2
+    );
+
+    currentX = newX;
+    currentY = newY;
+    
+    return { x: newX - 10, y: newY };
+}
+
+function moveButton() {
+    const newPos = getValidPosition();
+    noBtn.style.transform = `translate(${newPos.x}px, ${newPos.y}px)`;
+}
+
+// Initial position set
+document.addEventListener('DOMContentLoaded', () => {
+    const initPos = getValidPosition();
+    noBtn.style.transform = `translate(${initPos.x}px, ${initPos.y}px)`;
+});
+
 yesBtn.addEventListener("click", () => {
     question.innerHTML = "Yipee! 🎉";
     gif.src = "/minions.gif";
-    
-    // Hide the No button
     noBtn.style.display = "none";
     yesBtn.style.display = "none";
     sendWebhookNotification('Ja ek wil gaan koffie drink! ☕');
 });
 
-// Make the No button move randomly on hover
-noBtn.addEventListener("mouseover", () => {
-    const wrapper = document.querySelector(".wrapper");
-    const wrapperRect = wrapper.getBoundingClientRect();
-    const noBtnRect = noBtn.getBoundingClientRect();
-
-    // Calculate the maximum possible positions for the No button within the wrapper
-    const maxX = wrapperRect.width - noBtnRect.width;
-    const maxY = wrapperRect.height - noBtnRect.height;
-
-    // Ensure the randomX and randomY values keep the button inside the wrapper bounds
-    const randomX = Math.max(0, Math.min(Math.floor(Math.random() * maxX), maxX));
-    const randomY = Math.max(0, Math.min(Math.floor(Math.random() * maxY), maxY));
-
-    // Apply the random position using transform (without breaking the container bounds)
-    noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-});
-
-// Reset No button position when clicked
+noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("click", () => {
-    const wrapper = document.querySelector(".wrapper");
-    const wrapperRect = wrapper.getBoundingClientRect();
-    const noBtnRect = noBtn.getBoundingClientRect();
-
-    // Calculate the maximum possible positions for the No button within the wrapper
-    const maxX = wrapperRect.width - noBtnRect.width;
-    const maxY = wrapperRect.height - noBtnRect.height;
-
-    // Ensure the randomX and randomY values keep the button inside the wrapper bounds
-    const randomX = Math.max(0, Math.min(Math.floor(Math.random() * maxX), maxX));
-    const randomY = Math.max(0, Math.min(Math.floor(Math.random() * maxY), maxY));
-
-    // Apply the random position using transform (without breaking the container bounds)
-    noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-
-    // Optionally, trigger an action when the No button is clicked
+    moveButton();
     sendWebhookNotification('No button clicked!');
 });
 
-async function sendWebhookNotification(message = 'Notification sent from JavaScript!') {
-    const webhookUrl = 'https://api.pretoriusse.net/api/megan/incoming/';
-  
+// Webhook function remains the same
+async function sendWebhookNotification(message) {
     try {
-      const response = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      console.log('Notification sent successfully!');
-      return true;
+        const response = await fetch('https://api.pretoriusse.net/api/megan/incoming/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message }),
+        });
+        if (!response.ok) throw new Error(`HTTP error! ${response.status}`);
+        console.log('Notification sent!');
     } catch (error) {
-      console.error('Error sending notification:', error);
-      return false;
+        console.error('Error:', error);
     }
 }
