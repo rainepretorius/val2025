@@ -61,7 +61,6 @@ yesBtn.addEventListener("click", () => {
 noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("click", () => {
     moveButton();
-    sendWebhookNotification('No button clicked!');
 });
 
 document.addEventListener("DOMContentLoaded", () => {
