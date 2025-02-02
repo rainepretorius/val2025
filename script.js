@@ -57,11 +57,11 @@ yesBtn.addEventListener("click", () => {
     var old_no_display = noBtn.style.display;
     noBtn.style.display = "none";
     yesBtn.style.display = "none";
-    sendWebhookNotification('Ja ek wil gaan koffie / milkshake drink! ☕');
+    sendWebhookNotification('Ja ek wil jou valentine wees.');
     setTimeout(() => {
       noBtn.style.display = old_no_display;
       yesBtn.style.display = old_yes_display;
-      question.innerHTML = "Wil jy saam koffie of milkshake drink?";
+      question.innerHTML = "Sal jy my valentyn wees?";
       noBtn.style.transform = `translate(0px, 0px)`; // Set initial position
       gif.src = "/cat.gif";
     }, 8000);
