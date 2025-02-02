@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 yesBtn.addEventListener("click", () => {
-    question.innerHTML = "Yipee! 🎉<br>Raine  is laat weet!";
+    question.innerHTML = "Yipee! 🎉";
     gif.src = "/minions.gif";
     var old_yes_display = yesBtn.style.display;
     var old_no_display = noBtn.style.display;
