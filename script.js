@@ -69,7 +69,11 @@ yesBtn.addEventListener("click", () => {
 
 noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("click", () => {
+    question.innerHTML = "Probeer weer! 😉";
     moveButton();
+    setTimeout(() => {
+        question.innerHTML = "Sal jy my valentyn wees?";
+      }, 2000);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
